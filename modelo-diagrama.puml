@@ -7,7 +7,9 @@ actor :Aluno: as A
 actor :Professor: as P
 actor :Administrativo: as Adm
 actor :Direção: as D
+actor :Operadora Cartão: as Visa <<Sistema Externo>>
 
+Visa <---- (Solicita autorização cartão)
 A --> (Realizar Login)
 A --> (Realizar Matricula)
 A --> (Efetuar Pagamento)
@@ -26,12 +28,14 @@ D --> (Gerenciar Usuarios)
 D --> (Gerenciar Alocação do Professor)
 D --|> Adm
 
-(Gerenciar Boletos) --|> (Enviar Boleto) : <<include>>
-(Gerar Boleto) --|> (Enviar Boleto) : <<include>>
+(Gerenciar Boletos) ..|> (Enviar Boleto) : <<include>>
+(Gerar Boleto) ..|> (Enviar Boleto) : <<include>>
 
 ' extends include seta -- | >
-(Efetuar Pagamento) <|-- (Gerar QR PIX) : <<extend>>
-(Efetuar Pagamento) <|-- (Gerar Boleto) : <<extend>>
-(Efetuar Pagamento) <|-- (Pagamento por Cartão) : <<extend>>
+(Efetuar Pagamento) <|.. (Gerar QR PIX) : <<extend>>
+(Efetuar Pagamento) <|.. (Gerar Boleto) : <<extend>>
+(Efetuar Pagamento) <|.. (Pagamento por Cartão) : <<extend>>
+
+(Pagamento por Cartão) ..|> (Solicita autorização cartão) : <<include>>
 
 @enduml
