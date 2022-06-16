@@ -1,6 +1,6 @@
 @startuml
 left to right direction
-skinparam actorStyle awesome
+'skinparam actorStyle awesome
 title Diagrama de Casos de Uso do AVA ABC
 
 actor :Aluno: as A
