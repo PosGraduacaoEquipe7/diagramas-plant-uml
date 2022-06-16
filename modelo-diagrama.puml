@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+skinparam actorStyle awesome
+title Diagrama de Casos de Uso do AVA ABC
+
+actor :Aluno: as A
+actor :Professor: as P
+actor :Administrativo: as Adm
+actor :Direção: as D
+
+A --> (Realizar Login)
+A --> (Realizar Matricula)
+A --> (Efetuar Pagamento)
+A --> (Enviar Documentos)
+A --> (Recuperar Senha)
+
+P --> (Realizar Chamada)
+P --> (Gerenciar Notas)
+P --> (Recuperar Senha)
+Adm --> (Gerenciar Boletos)
+Adm --> (Validar Documentos)
+Adm --> (Recuperar Senha)
+Adm -> (Realizar Login)
+
+D --> (Gerenciar Usuarios)
+D --> (Gerenciar Alocação do Professor)
+D --|> Adm
+
+(Gerenciar Boletos) --|> (Enviar Boleto) : <<include>>
+(Gerar Boleto) --|> (Enviar Boleto) : <<include>>
+
+' extends include seta -- | >
+(Efetuar Pagamento) <|-- (Gerar QR PIX) : <<extend>>
+(Efetuar Pagamento) <|-- (Gerar Boleto) : <<extend>>
+(Efetuar Pagamento) <|-- (Pagamento por Cartão) : <<extend>>
+
+@enduml
