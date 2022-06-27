@@ -1,0 +1,120 @@
+@startuml
+'https://plantuml.com/class-diagram
+'Aggregation implies a relationship where the
+'child can exist independently of the parent.
+'Example: Class (parent) and Student (child).
+'Delete the Class and the Students still exist.
+'Composition implies a relationship where the child cannot exist independent of the parent
+class Matricula{
+    data: Date
+'    cpf: string
+'    Diploma: Documento
+}
+abstract class Pessoa{
+    nome: string
+    cpf: string
+    email: string
+    password: string
+}
+class RegistroAcesso{
+    dataHora: timestamp
+}
+
+class Aluno
+class Professor
+class Administador
+class Atividade{
+    nota: float
+    tipo: tipoAtividade
+    'TODO linkVideo: url
+}
+class Doenca{
+    nome: string
+}
+class Doente{
+    inicioQuarentena: date
+    fimQuarentena: date
+}
+class Curso
+class ControlePresenca{
+    aulaData: date
+}
+class Disciplina{
+    nome: string
+    descricao: string
+}
+class Contrato{
+    nome: string
+    texto: string
+    ativo: boolean
+}
+enum tipoAtividade {
+    prova
+    trabalho
+}
+class Turma
+class Sala{
+    Nome: string
+    Localizacao: string
+    Capacidade: int
+}
+class Documento{
+    tipoDocumento: TipoDocumento
+}
+class Parcela
+class Pagamento{
+    dataRealizado: date
+    tipo: TipoPagamento
+}
+class Voucher
+class Renegociacao{}
+class TransferenciaAluno{}
+class Reengresso{
+}
+class Divida{
+}
+class OrientacaoTCC{}
+Divida -- Renegociacao
+Matricula -- TransferenciaAluno
+Matricula -- OrientacaoTCC
+Divida -- Matricula
+Reengresso -- Matricula
+enum TipoPagamento{
+    boleto
+    pix
+    cartaoCredito
+    cartaoDebito
+    cheque
+}
+enum TipoDocumento{
+    cnh
+    cpf
+    diploma
+    compranteResidencia
+}
+Documento -- TipoDocumento
+Aluno -- Matricula
+Disciplina -- Disciplina : pre-requisito
+Matricula -- Curso
+Matricula *-- Documento
+Matricula o-- Voucher
+Matricula *-- Parcela
+Curso -- Disciplina
+Curso -- Contrato
+Pessoa <|-- Administador
+Pessoa <|-- Aluno
+Pessoa <|-- Professor
+'TODO confirmar lado do losango
+Atividade -- tipoAtividade
+Turma "n" o-- "1" Sala : acontece
+Turma --o Professor
+Turma -- Disciplina
+Turma -- Atividade
+Turma *-- ControlePresenca: estaPresente
+RegistroAcesso *-- Pessoa
+'TODO confirmar lado do losango
+Doente o-- Doenca
+Pessoa *-- Doente
+Pagamento -- TipoPagamento
+
+@enduml
