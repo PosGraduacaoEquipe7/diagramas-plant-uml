@@ -1,14 +1,15 @@
-@startuml
+@startuml classes
 'https://plantuml.com/class-diagram
 'Aggregation implies a relationship where the
 'child can exist independently of the parent.
 'Example: Class (parent) and Student (child).
 'Delete the Class and the Students still exist.
 'Composition implies a relationship where the child cannot exist independent of the parent
+
 class Matricula{
     data: Date
-'    cpf: string
-'    Diploma: Documento
+    cancelada: bool
+    semestre: string
 }
 abstract class Pessoa{
     nome: string
@@ -18,15 +19,33 @@ abstract class Pessoa{
 }
 class RegistroAcesso{
     dataHora: timestamp
+    ip: string
 }
-
-class Aluno
-class Professor
-class Administador
+class Aluno {
+}
+class Professor {
+    curriculo: string
+}
+class Administrador{
+    perfilAcesso: TipoPerfilAcesso
+}
+enum TipoPerfilAcesso {
+    basico
+    assistente
+    direcao
+}
 class Atividade{
     nota: float
-    tipo: tipoAtividade
-    'TODO linkVideo: url
+    tipo: TipoAtividade
+}
+enum TipoAtividade {
+    prova
+    trabalho
+}
+class Contrato{
+    nome: string
+    texto: string
+    ativo: boolean
 }
 class Doenca{
     nome: string
@@ -35,25 +54,37 @@ class Doente{
     inicioQuarentena: date
     fimQuarentena: date
 }
-class Curso
+class Curso {
+    nome: string
+    valor: decimal
+}
 class ControlePresenca{
     aulaData: date
 }
 class Disciplina{
     nome: string
     descricao: string
+    cargaHoraria: decimal
 }
-class MaterialApoioDisciplina
-class Contrato{
+abstract class MaterialApoioDisciplina{
     nome: string
+    dataEnvio: date
+}
+class MaterialApoioDisciplinaLink{
+    link: string
+}
+class MaterialApoioDisciplinaArquivo{
+    chaveCDN: string
+}
+class MaterialApoioDisciplinaMarkdown{
     texto: string
-    ativo: boolean
 }
-enum tipoAtividade {
-    prova
-    trabalho
+class Turma {
+    dataInicio: date
+    dataTermino: date
+    horarios: int
+    semestre: string
 }
-class Turma
 class Sala{
     Nome: string
     Localizacao: string
@@ -62,33 +93,70 @@ class Sala{
 class Documento{
     tipoDocumento: TipoDocumento
 }
-class Parcela
+class Parcela {
+    valor: decimal
+    dataVencimento: date
+}
 class Pagamento{
     dataRealizado: date
     tipo: TipoPagamento
 }
-class Voucher
-class Renegociacao{}
-class TransferenciaAluno{}
-class Reengresso{
+class Voucher {
+    dataCadastro: date
+    valor: decimal
+    codigo: string
+}
+class VoucherExclusivo {
+    cpf: string
+}
+class Renegociacao{
+    novoPrimeiroVencimento: date
+    multa: decimal
+    juros: decimal
+}
+class TransferenciaAluno{
+    data: date
+    aprovada: date
+    dataLimite: date
 }
 class Divida{
+    valorTotal: decimal
+    quantidadeParcelas: int
 }
-class OrientacaoTCC{}
-class Protocolo
-class TipoProtocolo
-class Notificacao
-class DocumentoProfessor
-enum NotificacaoTipo{
-  sms
-  email
-  push
+class OrientacaoTCC{
+    semestre: string
 }
-Divida -- Renegociacao
-Matricula -- TransferenciaAluno
-Matricula -- OrientacaoTCC
-Divida -- Matricula
-Reengresso -- Matricula
+class Encontro {
+    data: date
+    sala: string
+    linkPlataforma: string
+}
+class Protocolo {
+    tipo: TipoProtocolo
+    data: date
+    encerrado: bool
+}
+enum TipoProtocolo{
+    reclamacao
+    reingresso
+    cancelamento
+    trancamento
+    transferenciaAluno
+    irpf
+}
+class Notificacao{
+    dataEnvio: date
+    texto: string
+    tipo: TipoNotificacao
+}
+class DocumentoProfessor{
+    nome: string
+}
+enum TipoNotificacao{
+    sms
+    email
+    push
+}
 enum TipoPagamento{
     boleto
     pix
@@ -102,37 +170,57 @@ enum TipoDocumento{
     diploma
     compranteResidencia
 }
-Documento -- TipoDocumento
-Aluno -- Matricula
-Disciplina -- Disciplina : pre-requisito
-Disciplina -- MaterialApoioDisciplina
-MaterialApoioDisciplina -- Professor : autor
-Matricula -- Curso
-Matricula *-- Documento
-Matricula o-- Voucher
-Matricula *-- Parcela
-Curso -- Disciplina
-Curso -- Contrato
-Pessoa <|-- Administador
-Pessoa <|-- Aluno
-Pessoa <|-- Professor
-Pessoa -- Protocolo
-Protocolo -- TipoProtocolo
-'TODO confirmar lado do losango
-Atividade -- tipoAtividade
-Turma "n" o-- "1" Sala : acontece
-Turma --o Professor
-Turma -- Disciplina
-Turma -- Atividade
-Turma *-- ControlePresenca: estaPresente
-RegistroAcesso *-- Pessoa
-'TODO confirmar lado do losango
-Doente o-- Doenca
-Pessoa *-- Doente
-Pessoa "n" -- "n" Notificacao
-Pagamento -- TipoPagamento
-Notificacao -- NotificacaoTipo
-Professor *-- DocumentoProfessor
 
+Pessoa <|-d- Administrador
+Pessoa <|- Aluno
+Pessoa <|-- Professor
+
+MaterialApoioDisciplina <|-- MaterialApoioDisciplinaLink
+MaterialApoioDisciplina <|-- MaterialApoioDisciplinaArquivo
+MaterialApoioDisciplina <|-- MaterialApoioDisciplinaMarkdown
+
+Divida "1" -- "0..n" Renegociacao
+Divida "0..n" -- "1" Matricula
+Matricula "1" -u- "0..n" TransferenciaAluno
+Matricula "1" -u- "0..n" OrientacaoTCC
+Aluno "1" -- "0..n" Matricula
+Disciplina -- Disciplina : pre-requisito
+Disciplina "1" -- "0..n" MaterialApoioDisciplina
+MaterialApoioDisciplina "0..n" -- "1" Professor : autor
+Matricula "0..n" -- "1" Curso
+Matricula "1" *-- "1..n" Documento
+Matricula "1" o-- "1" Voucher
+Matricula "1" *-- "1..n" Parcela
+Curso "1" -- "1..n" Disciplina
+Curso "1" --- "1..n" Contrato
+Pessoa "1" -- "0..n" Protocolo
+Turma "0..n" o-- "1" Sala : acontece
+Turma "0..n" --o "1" Professor
+Turma "1..n" -- "1..n" Disciplina
+Turma "1" -r- "0..n" Atividade
+Turma "1" *-- "0..n" ControlePresenca: estaPresente
+RegistroAcesso "0..n" *-- "1" Pessoa
+Doente "0..n" o-- "1" Doenca
+Pessoa "1" *-- "1" Doente
+Pessoa "1..n" -- "0..n" Notificacao
+Professor "1" *-- "0..n" DocumentoProfessor
+Professor "1" -- "0..n" OrientacaoTCC : orienta
+OrientacaoTCC "1" *-u- "1..n" Encontro
+Pagamento "0..n" -- "1" Parcela
+Voucher "1" -- "0..n" VoucherExclusivo
+TransferenciaAluno "0..n" o-- "1..n" Disciplina : aproveitamento\ncréditos\n\n\n\n\n
+TransferenciaAluno "0..n" o-- "1..n" Disciplina : substituição\nde disciplina
+
+Pagamento -- TipoPagamento
+Notificacao -- TipoNotificacao
+Documento -- TipoDocumento
+Protocolo -- TipoProtocolo
+Atividade -- TipoAtividade
+Administrador -- TipoPerfilAcesso
+
+' -u- -> up
+' -d- -> down
+' -l- -> left
+' -r- -> right
 
 @enduml
