@@ -43,6 +43,7 @@ class Disciplina{
     nome: string
     descricao: string
 }
+class MaterialApoioDisciplina
 class Contrato{
     nome: string
     texto: string
@@ -74,6 +75,15 @@ class Reengresso{
 class Divida{
 }
 class OrientacaoTCC{}
+class Protocolo
+class TipoProtocolo
+class Notificacao
+class DocumentoProfessor
+enum NotificacaoTipo{
+  sms
+  email
+  push
+}
 Divida -- Renegociacao
 Matricula -- TransferenciaAluno
 Matricula -- OrientacaoTCC
@@ -95,6 +105,8 @@ enum TipoDocumento{
 Documento -- TipoDocumento
 Aluno -- Matricula
 Disciplina -- Disciplina : pre-requisito
+Disciplina -- MaterialApoioDisciplina
+MaterialApoioDisciplina -- Professor : autor
 Matricula -- Curso
 Matricula *-- Documento
 Matricula o-- Voucher
@@ -104,6 +116,8 @@ Curso -- Contrato
 Pessoa <|-- Administador
 Pessoa <|-- Aluno
 Pessoa <|-- Professor
+Pessoa -- Protocolo
+Protocolo -- TipoProtocolo
 'TODO confirmar lado do losango
 Atividade -- tipoAtividade
 Turma "n" o-- "1" Sala : acontece
@@ -115,6 +129,10 @@ RegistroAcesso *-- Pessoa
 'TODO confirmar lado do losango
 Doente o-- Doenca
 Pessoa *-- Doente
+Pessoa "n" -- "n" Notificacao
 Pagamento -- TipoPagamento
+Notificacao -- NotificacaoTipo
+Professor *-- DocumentoProfessor
+
 
 @enduml
