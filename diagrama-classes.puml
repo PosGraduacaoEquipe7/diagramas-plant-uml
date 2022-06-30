@@ -15,13 +15,23 @@ abstract class Pessoa{
     nome: string
     cpf: string
     email: string
-    password: string
+    senha: string
+    telefone: string
+}
+class Endereco {
+    logradouro: string
+    numero: string
+    bairro: string
+    cep: string
+    cidade: string
+    uf: string
 }
 class RegistroAcesso{
     dataHora: timestamp
     ip: string
 }
 class Aluno {
+    registroAcademico: string
 }
 class Professor {
     curriculo: string
@@ -179,37 +189,38 @@ MaterialApoioDisciplina <|-- MaterialApoioDisciplinaLink
 MaterialApoioDisciplina <|-- MaterialApoioDisciplinaArquivo
 MaterialApoioDisciplina <|-- MaterialApoioDisciplinaMarkdown
 
-Divida "1" -- "0..n" Renegociacao
-Divida "0..n" -- "1" Matricula
-Matricula "1" -u- "0..n" TransferenciaAluno
-Matricula "1" -u- "0..n" OrientacaoTCC
-Aluno "1" -- "0..n" Matricula
+Pessoa "1" <-u- "*0..*" Endereco
+Divida "1" <-- "0..*" Renegociacao
+Divida "0..*" --> "1" Matricula
+Matricula "1" <-u- "0..*" TransferenciaAluno
+Matricula "1" <-u- "0..*" OrientacaoTCC
+Aluno "1" <-- "0..*" Matricula
 Disciplina -- Disciplina : pre-requisito
-Disciplina "1" -- "0..n" MaterialApoioDisciplina
-MaterialApoioDisciplina "0..n" -- "1" Professor : autor
-Matricula "0..n" -- "1" Curso
-Matricula "1" *-- "1..n" Documento
+Disciplina "1" <-- "0..*" MaterialApoioDisciplina
+MaterialApoioDisciplina "0..*" --> "1" Professor : autor
+Matricula "0..*" --> "1" Curso
+Matricula "1" *-- "1..*" Documento
 Matricula "1" o-- "1" Voucher
-Matricula "1" *-- "1..n" Parcela
-Curso "1" -- "1..n" Disciplina
-Curso "1" --- "1..n" Contrato
-Pessoa "1" -- "0..n" Protocolo
-Turma "0..n" o-- "1" Sala : acontece
-Turma "0..n" --o "1" Professor
-Turma "1..n" -- "1..n" Disciplina
-Turma "1" -r- "0..n" Atividade
-Turma "1" *-- "0..n" ControlePresenca: estaPresente
-RegistroAcesso "0..n" *-- "1" Pessoa
-Doente "0..n" o-- "1" Doenca
+Matricula "1" *-- "1..*" Parcela
+Curso "1" -- "1..*" Disciplina
+Curso "1" <---> "1..*" Contrato
+Pessoa "1" <-- "0..*" Protocolo
+Turma "0..*" o-- "1" Sala : acontece
+Turma "0..*" --o "1" Professor
+Turma "1..*" <--> "1..*" Disciplina
+Turma "1" <-r- "0..*" Atividade
+Turma "1" *-- "0..*" ControlePresenca: estaPresente
+RegistroAcesso "0..*" *-- "1" Pessoa
+Doente "0..*" o-- "1" Doenca
 Pessoa "1" *-- "1" Doente
-Pessoa "1..n" -- "0..n" Notificacao
-Professor "1" *-- "0..n" DocumentoProfessor
-Professor "1" -- "0..n" OrientacaoTCC : orienta
-OrientacaoTCC "1" *-u- "1..n" Encontro
-Pagamento "0..n" -- "1" Parcela
-Voucher "1" -- "0..n" VoucherExclusivo
-TransferenciaAluno "0..n" o-- "1..n" Disciplina : aproveitamento\ncréditos\n\n\n\n\n
-TransferenciaAluno "0..n" o-- "1..n" Disciplina : substituição\nde disciplina
+Pessoa "1..*" <-- "0..*" Notificacao
+Professor "1" *-- "0..*" DocumentoProfessor
+Professor "1" -- "0..*" OrientacaoTCC : orienta
+OrientacaoTCC "1" *-u- "1..*" Encontro
+Pagamento "0..*" --> "1" Parcela
+Voucher "1" <-- "0..*" VoucherExclusivo
+TransferenciaAluno "0..*" o-- "1..*" Disciplina : aproveitamento\ncréditos\n\n\n\n\n
+TransferenciaAluno "0..*" o-- "1..*" Disciplina : substituição\nde disciplina
 
 Pagamento -- TipoPagamento
 Notificacao -- TipoNotificacao
