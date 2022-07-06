@@ -40,8 +40,17 @@ enum TipoPerfilAcesso {
     direcao
 }
 class Atividade{
-    nota: float
+    descricao: string
+    notaMaxima: float
     tipo: TipoAtividade
+}
+class RetornoAtividade{
+    dataHora: datetime
+    textoResposta: string
+    linkDocumentoResposta: string
+    avaliado: bool
+    dataHoraAvaliacao: datetime
+    nota: decimal
 }
 enum TipoAtividade {
     prova
@@ -97,6 +106,7 @@ class Sala{
 }
 class Documento{
     tipoDocumento: TipoDocumento
+    linkArquivo: string
 }
 class Parcela {
     valor: decimal
@@ -110,6 +120,7 @@ class Voucher {
     dataCadastro: date
     valor: decimal
     codigo: string
+    dataValidade: date
 }
 class VoucherExclusivo {
     cpf: string
@@ -186,7 +197,7 @@ MaterialApoioDisciplina <|-- MaterialApoioDisciplinaMarkdown
 
 Pessoa "1" <-u- "*0..*" Endereco
 Divida "1" <-- "0..*" Renegociacao
-Divida "0..*" --> "1" Matricula
+Divida "0..*" -u-> "1" Matricula
 Matricula "1" <-u- "0..*" TransferenciaAluno
 Matricula "1" <-u- "0..*" OrientacaoTCC
 Aluno "1" <-- "0..*" Matricula
@@ -198,12 +209,15 @@ Matricula "1" *-- "1..*" Documento
 Matricula "1" o-- "1" Voucher
 Matricula "1" *-- "1..*" Parcela
 Curso "1" -- "1..*" Disciplina
-Curso "1" <---> "1..*" Contrato
+Curso "1" <-u-> "1..*" Contrato
+Matricula "0..*" --> "1" Contrato : versao\ndo contrato
 Pessoa "1" <-- "0..*" Protocolo
 Turma "0..*" o-- "1" Sala : acontece
 Turma "0..*" --o "1" Professor
 Turma "1..*" <--> "1..*" Disciplina
 Turma "1" <-r- "0..*" Atividade
+Atividade "1" <-r- "0..*" RetornoAtividade
+RetornoAtividade "0..*" --> "1" Matricula
 Turma "1" *-- "0..*" ControlePresenca: estaPresente
 RegistroAcesso "0..*" *-- "1" Pessoa
 Doente "0..*" o-- "1" Doenca
@@ -214,8 +228,8 @@ Professor "1" -- "0..*" OrientacaoTCC : orienta
 OrientacaoTCC "1" *-u- "1..*" Encontro
 Pagamento "0..*" --> "1" Parcela
 Voucher "1" <-- "0..*" VoucherExclusivo
-TransferenciaAluno "0..*" o-- "1..*" Disciplina : aproveitamento\ncréditos\n\n\n\n\n
-TransferenciaAluno "0..*" o-- "1..*" Disciplina : substituição\nde disciplina
+TransferenciaAluno "0..*" o-- "1..*" Disciplina : aproveitamento\ncréditos
+TransferenciaAluno "0..*" o-- "1..*" Disciplina : \nsubstituição\nde disciplina
 
 Pagamento -- TipoPagamento
 Notificacao -- TipoNotificacao
