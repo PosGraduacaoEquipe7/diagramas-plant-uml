@@ -1,0 +1,69 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+'LAYOUT_TOP_DOWN()
+'LAYOUT_AS_SKETCH()
+LAYOUT_WITH_LEGEND()
+
+title Diagrama de contexto Instituição ABC C4 nivel 1
+
+Person(aluno, "Aluno da Instituição","Um aluno com matricula ativa")
+Person(professor, "Professor da Instituição", "Professor que acessa sua área logada")
+Person(admin, "Administrativo da Instituição", "Funcionario administrativo")
+Person(direcao, "Direção da Instituição", "Funcionario da Direção")
+
+Person(vizitante_site, "Pessoa que acessa o site da instituição", "Visitante do site")
+
+Enterprise_Boundary(c0, "Instituição ABC") {
+
+    System(abc_aluno_sistema, "Módulo Aluno ABC", "Permite que Alunos acessem suas funcionaliades no sistem.")
+    System(abc_professor_sistema, "Módulo Professor ABC", "Permite que Professores e Direção acessem suas funcionaliades no sistem.")
+    System(abc_adm_sistema, "Módulo Admin ABC", "Permite que Administrativo acessem suas funcionaliades no sistem.")
+    System(abc_direcao_sistema, "Módulo Direção ABC", "Permite que Direção acessem suas funcionaliades no sistem.")
+    System(abc_backend, "Sistema compartilhado", "Fornece API aos demais sistemas")
+    System(website, "Website aberto", "Website publico")
+
+    System_Ext(gatewayCartao, "Gateway de Pagamentos", "Autoriza pagamentos cartão")
+    System_Ext(gatewayPIX, "Gateway de PIX", "Autoriza pagamentos PIX")
+    System_Ext(gatewayBoleto, "Gateway de Pagamentos", "Autoriza pagamentos Boleto")
+
+    System_Ext(mail_system, "Sistema de Email", "The internal Microsoft Exchange e-mail system.")
+    System_Ext(cloud_provider, "Provedor de Datacenter em nuvem", "Provedor de Datacenter em nuvem como AWS, Azure, etc.")
+
+    'Person_Ext(customer_service, "Customer Service Staff", "Customer service staff within the bank.")
+    'Person_Ext(back_office, "Back Office Staff", "Administration and support staff within the bank.")
+}
+
+
+'Rel_U, Rel_Up
+'Rel_D, Rel_Down
+'Rel_L, Rel_Left
+'Rel_R, Rel_Right
+'In rare cases, you can force the layout of elements which have no relationships by using:
+'    Lay_U(from, to), Lay_Up(from, to)
+'    Lay_D(from, to), Lay_Down(from, to)
+'    Lay_L(from, to), Lay_Left(from, to)
+'    Lay_R(from, to), Lay_Right(from, to)
+Rel(abc_aluno_sistema, abc_backend, "Uses")
+Rel(abc_professor_sistema, abc_backend, "Uses")
+Rel(abc_adm_sistema, abc_backend, "Uses")
+Rel(abc_direcao_sistema, abc_backend, "Uses")
+Rel(abc_backend,gatewayBoleto, "Uses")
+Rel(abc_backend,gatewayPIX, "Uses")
+Rel(abc_backend,gatewayCartao, "Uses")
+Rel(abc_backend,cloud_provider, "Uses")
+Rel(vizitante_site,website, "Access")
+
+Rel_R(aluno, abc_aluno_sistema, "Uses")
+Rel_L(professor, abc_professor_sistema, "Uses")
+Rel_Back(aluno, mail_system, "Envia e-mail para")
+Rel_Back(professor, mail_system, "Envia e-mail para")
+Rel_Back(admin, mail_system, "Envia e-mail para")
+Rel_Back(direcao, mail_system, "Envia e-mail para")
+
+'Lay_D(atm, banking_system)
+'Lay_D(atm, customer)
+'Lay_U(mail_system, customer)
+@enduml
