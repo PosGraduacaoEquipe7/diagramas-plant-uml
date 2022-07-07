@@ -1,6 +1,5 @@
-@startuml
+@startuml diagrama
 left to right direction
-'skinparam actorStyle awesome
 title Diagrama de Casos de Uso do AVA ABC
 
 actor :Aluno: as A
@@ -9,33 +8,51 @@ actor :Administrativo: as Adm
 actor :Direção: as D
 actor :Operadora Cartão: as Visa <<Sistema Externo>>
 
-Visa <---- (Solicita autorização cartão)
-A --> (Realizar Login)
-A --> (Realizar Matricula)
-A --> (Efetuar Pagamento)
-A --> (Enviar Documentos)
-A --> (Recuperar Senha)
+rectangle "Sistema ABC" {
+    (UC_011 - Solicitar autorização cartão) --> Visa
+    A --> (UC_019 - Gerar Certificado de Conclusão)
+    A --> (UC_001 - Realizar Login)
+    A --> (UC_003 - Realizar Matricula)
+    A --> (UC_004 - Efetuar Pagamento)
+    A --> (UC_005 - Enviar Documentos)
+    A --> (UC_002 - Recuperar Senha)
+    A --> (UC_017 - Visualizar Histórico Acadêmico)
 
-P --> (Realizar Chamada)
-P --> (Gerenciar Notas)
-P --> (Recuperar Senha)
-Adm --> (Gerenciar Boletos)
-Adm --> (Validar Documentos)
-Adm --> (Recuperar Senha)
-Adm -> (Realizar Login)
+    P --> (UC_014 - Realizar Chamada)
+    P --> (UC_015 - Gerenciar Notas)
+    P --> (UC_016 - Gerenciar Planos de Aula)
+    P --> (UC_002 - Recuperar Senha)
+    (UC_009 - Gerenciar Boletos) <--- Adm
+    (UC_021 - Validar Documentos) <- Adm
+    (UC_002 - Recuperar Senha) <--- Adm
+    (UC_001 - Realizar Login) <--- Adm
+    (UC_020 - Gerar Relatórios) <- Adm
 
-D --> (Gerenciar Usuarios)
-D --> (Gerenciar Alocação do Professor)
-D --|> Adm
+    (UC_012 - Gerenciar Usuarios) << L_CRUD >>
+    (UC_012 - Gerenciar Usuarios) <- D
 
-(Gerenciar Boletos) ..|> (Enviar Boleto) : <<include>>
-(Gerar Boleto) ..|> (Enviar Boleto) : <<include>>
+    (UC_022 - Gerenciar Cursos) << L_CRUD >>
+    (UC_022 - Gerenciar Cursos) <- D
 
-' extends include seta -- | >
-(Efetuar Pagamento) <|.. (Gerar QR PIX) : <<extend>>
-(Efetuar Pagamento) <|.. (Gerar Boleto) : <<extend>>
-(Efetuar Pagamento) <|.. (Pagamento por Cartão) : <<extend>>
+    (UC_023 - Gerenciar Disciplinas) << L_CRUD >>
+    (UC_023 - Gerenciar Disciplinas) <- D
 
-(Pagamento por Cartão) ..|> (Solicita autorização cartão) : <<include>>
+    (UC_024 - Abrir Nova Turma) <- D
+
+    (UC_013 - Gerenciar Alocação do Professor) <-- D
+    Adm <|- D
+
+    (UC_009 - Gerenciar Boletos) ..|> (UC_010 - Enviar Boleto) : <<include>>
+    (UC_006 - Gerar Boleto) ..|> (UC_010 - Enviar Boleto) : <<include>>
+
+    (UC_003 - Realizar Matricula) <|.. (UC_018 - Informar Dados Voucher) : <<extend>>
+
+    ' extends include seta -- | >
+    (UC_004 - Efetuar Pagamento) <|.. (UC_007 - Gerar QR PIX) : <<extend>>
+    (UC_004 - Efetuar Pagamento) <|.. (UC_006 - Gerar Boleto) : <<extend>>
+    (UC_004 - Efetuar Pagamento) <|.. (UC_008 - Pagar via Cartão) : <<extend>>
+
+    (UC_008 - Pagar via Cartão) ..|> (UC_011 - Solicitar autorização cartão) : <<include>>
+}
 
 @enduml
