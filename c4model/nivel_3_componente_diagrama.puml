@@ -30,3 +30,15 @@ Rel(spa, accounts, "Uses", "JSON/HTTPS")
 Rel(ma, sign, "Uses", "JSON/HTTPS")
 Rel(ma, accounts, "Uses", "JSON/HTTPS")
 @enduml
+
+'Nivel 2
+'Container Financeiro
+'Container Aluno
+'Container Matricula
+
+
+'Nivel 3 da matricula os passos
+'componente de confirmar pagto
+'coponente de confirmar documentos
+'compoenente de confirmar turma disponibilidade
+'compoenente de agendar cobranças futuras

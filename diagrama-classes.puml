@@ -1,6 +1,6 @@
 @startuml classes
-left to right direction
-
+top to bottom direction
+scale 800 width
 class Matricula{
     data: Date
     cancelada: bool
