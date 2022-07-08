@@ -4,6 +4,8 @@
 'LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
+title Diagrama Container - Instituição ABC
+
 Person(aluno, "Aluno da Instituição","Um aluno com matricula ativa")
 Person(professor, "Professor da Instituição", "Professor que acessa sua área logada")
 Person(admin, "Administrativo da Instituição", "Funcionario administrativo")

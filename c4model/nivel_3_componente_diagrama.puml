@@ -1,40 +1,47 @@
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+'!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 ' uncomment the following line and comment the first to use locally
-' !include C4_Component.puml
+!include C4_Component.puml
 
 LAYOUT_WITH_LEGEND()
 
-title Component diagram for Internet Banking System - API Application
+title Diagrama Componente - Instituição ABC
 
-Container(spa, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-Container(ma, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
-ContainerDb(db, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
-System_Ext(mbs, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+Container(spa, "Single Page Application", "Typescript e React", "Prove todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.")
+Container(ma, "Mobile App", "React Native", "Prove as mesmas funcionalidades para o Aluno ao realizar matricula utilizando dispositivo móvel.")
+System_Ext(s3, "AWS S3", "Serviço de armazenamento de objetos em nuvem.")
+ContainerDb(dbDoc, "Database Documentos", "Banco de dados relacional", "Armazena documentos  etc.")
+ContainerDb(dbFin, "Database Financeiro ", "Banco de dados relacional", "Armazena informações financeiras, parcelas, boletos")
+ContainerDb(dbAloc, "Database Alocação", "Banco de dados relacional", "Stores user registration information, hashed authentication credentials, access logs, etc.")
+
+Container(keycloak, "KeyCloak", "Gerenciamento de identidade e acesso", "Armazena informação de registro de usuários, logs de acesso e etc.")
 
 Container_Boundary(api, "API Application") {
-    Component(sign, "Sign In Controller", "MVC Rest Controlle", "Allows users to sign in to the internet banking system")
-    Component(accounts, "Accounts Summary Controller", "MVC Rest Controller", "Provides customers with a summary of their bank accounts")
-    Component(security, "Security Component", "Spring Bean", "Provides functionality related to singing in, changing passwords, etc.")
-    Component(mbsfacade, "Mainframe Banking System Facade", "Spring Bean", "A facade onto the mainframe banking system.")
+    Component(sign, "Controle de Autenticação", "MVC Rest Controlle", "Allows users to sign in to the internet banking system")
+    Component(matricula, "Componente Matricula", "MVC Rest Controller", "Provê todas as API para gestão de matriculas")
+    Component(security, "Componente Segurança", "middleware", "Provides functionality related to singing in, changing passwords, etc.")
+    Component(docsService, "Documentos Service", "service", "Gerencia documentos, diplomas e comprovantes.")
+    Component(alocacaoService, "Alocação Service", "service", "Confere disponibilidade e montagem de turmas.")
+    Component(financeiroService, "Financeiro Service", "service", "Gerencia pagamentos e mensalidades.")
 
     Rel(sign, security, "Uses")
-    Rel(accounts, mbsfacade, "Uses")
-    Rel(security, db, "Read & write to", "JDBC")
-    Rel(mbsfacade, mbs, "Uses", "XML/HTTPS")
+    Rel(security, keycloak, "Read & write to", "JDBC")
+    Rel(matricula, financeiroService, "Uses")
+    Rel(matricula, docsService, "Uses")
+    Rel(matricula, alocacaoService, "Uses")
 }
 
 Rel(spa, sign, "Uses", "JSON/HTTPS")
-Rel(spa, accounts, "Uses", "JSON/HTTPS")
+Rel(spa, matricula, "Uses", "JSON/HTTPS")
 
 Rel(ma, sign, "Uses", "JSON/HTTPS")
-Rel(ma, accounts, "Uses", "JSON/HTTPS")
-@enduml
+Rel(ma, matricula, "Uses", "JSON/HTTPS")
 
-'Nivel 2
-'Container Financeiro
-'Container Aluno
-'Container Matricula
+Rel(financeiroService, dbFin, "Uses")
+Rel(docsService, dbDoc, "Uses")
+Rel(docsService, s3, "Uses")
+Rel(alocacaoService, dbAloc, "Uses")
+@enduml
 
 
 'Nivel 3 da matricula os passos
