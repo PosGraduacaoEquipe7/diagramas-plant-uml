@@ -1,0 +1,96 @@
+@startuml classes
+left to right direction
+class Matricula{
+    data: Date
+    cancelada: bool
+    semestre: string
+}
+abstract class Pessoa{
+    nome: string
+    cpf: string
+    email: string
+    senha: string
+    telefone: string
+}
+class Endereco {
+    logradouro: string
+    numero: string
+    bairro: string
+    cep: string
+    cidade: string
+    uf: string
+}
+class RegistroAcesso{
+    dataHora: timestamp
+    ip: string
+}
+class Aluno {
+    registroAcademico: string
+}
+class Professor {
+    curriculo: string
+}
+class Administrador{
+    perfilAcesso: TipoPerfilAcesso
+}
+enum TipoPerfilAcesso {
+    basico
+    assistente
+    direcao
+}
+class Contrato{
+    nome: string
+    texto: string
+    ativo: boolean
+}
+class Curso {
+    nome: string
+    valor: decimal
+}
+class Disciplina{
+    nome: string
+    descricao: string
+    cargaHoraria: decimal
+}
+class Turma {
+    dataInicio: date
+    dataTermino: date
+    horarios: int
+    semestre: string
+}
+class Documento{
+    tipoDocumento: TipoDocumento
+    linkArquivo: string
+}
+class Parcela {
+    valor: decimal
+    dataVencimento: date
+}
+enum TipoDocumento{
+    cnh
+    cpf
+    diploma
+    compranteResidencia
+}
+
+Pessoa <|-d- Administrador
+Pessoa <|- Aluno
+Pessoa <|-- Professor
+
+Pessoa "1" <-u- "*0..*" Endereco
+Aluno "1" <-- "0..*" Matricula
+Disciplina -- Disciplina : pre-requisito
+Matricula "0..*" --> "1" Curso
+Matricula "1" *-- "1..*" Documento
+Matricula "1" *-- "1..*" Parcela
+Curso "1" -- "1..*" Disciplina
+Curso "1" <-u-> "1..*" Contrato
+Matricula "0..*" --> "1" Contrato : versao\ndo contrato
+Turma "0..*" --o "1" Professor
+Turma "1..*" <--> "1..*" Disciplina
+RegistroAcesso "0..*" *-- "1" Pessoa
+
+Documento -- TipoDocumento
+Administrador -- TipoPerfilAcesso
+
+@enduml

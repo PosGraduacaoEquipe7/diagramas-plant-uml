@@ -3,12 +3,13 @@
 ' uncomment the following line and comment the first to use locally
 !include C4_Component.puml
 
+LAYOUT_LEFT_RIGHT()
 LAYOUT_WITH_LEGEND()
 
 title Diagrama Componente - Instituição ABC
 
-Container(spa, "Single Page Application", "Typescript e React", "Prove todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.")
-Container(ma, "Mobile App", "React Native", "Prove as mesmas funcionalidades para o Aluno ao realizar matricula utilizando dispositivo móvel.")
+Container(ma, "App Mobile", "React Native", "Provê as mesmas funcionalidades para o Aluno ao realizar matricula utilizando dispositivo móvel.")
+Container(spa, "SPA WEB", "TypeScript e React", "Provê todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.")
 System_Ext(s3, "AWS S3", "Serviço de armazenamento de objetos em nuvem.")
 ContainerDb(dbDoc, "Database Documentos", "Banco de dados relacional", "Armazena documentos  etc.")
 ContainerDb(dbFin, "Database Financeiro ", "Banco de dados relacional", "Armazena informações financeiras, parcelas, boletos")
@@ -17,25 +18,27 @@ ContainerDb(dbAloc, "Database Alocação", "Banco de dados relacional", "Stores 
 Container(keycloak, "KeyCloak", "Gerenciamento de identidade e acesso", "Armazena informação de registro de usuários, logs de acesso e etc.")
 
 Container_Boundary(api, "API Application") {
-    Component(sign, "Controle de Autenticação", "MVC Rest Controlle", "Allows users to sign in to the internet banking system")
-    Component(matricula, "Componente Matricula", "MVC Rest Controller", "Provê todas as API para gestão de matriculas")
-    Component(security, "Componente Segurança", "middleware", "Provides functionality related to singing in, changing passwords, etc.")
+    Component(sign, "Controller Autenticação", "MVC Rest Controller", "Provê API para gestão do usuário e login")
+    Component(security, "Componente Segurança", "middleware", "Provê funcionalidades para login, alteração de senha, etc")
+    Component(cmatricula, "Controller Matricula", "MVC Rest Controller", "Provê todas as API para gestão de matriculas")
+    Component(matricula, "Service Matricula", "service", "Provê as regras de negócio para gestão de matrículas")
     Component(docsService, "Documentos Service", "service", "Gerencia documentos, diplomas e comprovantes.")
     Component(alocacaoService, "Alocação Service", "service", "Confere disponibilidade e montagem de turmas.")
     Component(financeiroService, "Financeiro Service", "service", "Gerencia pagamentos e mensalidades.")
 
     Rel(sign, security, "Uses")
     Rel(security, keycloak, "Read & write to", "JDBC")
+    Rel(cmatricula, matricula, "Uses")
     Rel(matricula, financeiroService, "Uses")
     Rel(matricula, docsService, "Uses")
     Rel(matricula, alocacaoService, "Uses")
 }
 
 Rel(spa, sign, "Uses", "JSON/HTTPS")
-Rel(spa, matricula, "Uses", "JSON/HTTPS")
-
 Rel(ma, sign, "Uses", "JSON/HTTPS")
-Rel(ma, matricula, "Uses", "JSON/HTTPS")
+Rel(spa, cmatricula, "Uses", "JSON/HTTPS")
+
+Rel(ma, cmatricula, "Uses", "JSON/HTTPS")
 
 Rel(financeiroService, dbFin, "Uses")
 Rel(docsService, dbDoc, "Uses")
