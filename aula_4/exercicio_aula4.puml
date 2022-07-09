@@ -1,0 +1,71 @@
+@startuml classes
+top to bottom direction
+scale 800 width
+
+class Curso{
+    descricao: string
+}
+class Turma{
+    numero: string
+}
+class Prova {
+    peso: decimal
+    dataHoraInicio: datetime
+    dateHoraTermino: datetime
+}
+abstract class Questao {
+    peso: decimal
+    enunciado:string
+}
+class QuestaoMultiplaEscolha {
+}
+class QuestaoRelacionamento {
+}
+class RespostaMultiplaEscolha{
+    letra: string
+    texto: string
+    correta: bool
+}
+class RespostaRelacionamento {
+    colunaA: string
+    colunaB: string
+}
+
+' --
+
+abstract class RespostaAluno {
+    pontuacao: decimal
+}
+class RespostaAlunoMultiplaEscolha {
+  correta: bool
+  letraSelecionada: string
+}
+class RespostaAlunoRelacionar {
+    colunaA: string
+    colunaB: string
+}
+class Aluno {
+  nome: string
+}
+class ProvaAluno {
+    dataHoraInicio: datetime
+    dateHoraEntrega: datetime
+    notaFinal: decimal
+}
+
+Questao <|-u- QuestaoMultiplaEscolha
+Questao <|-u- QuestaoRelacionamento
+RespostaAluno <|-u- RespostaAlunoMultiplaEscolha
+RespostaAluno <|-u- RespostaAlunoRelacionar
+
+Turma --> Curso
+Prova --> Turma
+Questao "1..*" --* "1" Prova
+RespostaMultiplaEscolha "5" <-- "1" QuestaoMultiplaEscolha
+RespostaRelacionamento "2..5" <-- "1" QuestaoRelacionamento
+Aluno "1" <-l- "1..*" ProvaAluno
+ProvaAluno "1..*" -l-> "1" Prova
+RespostaAluno "1..*" <-- "1" ProvaAluno
+RespostaAluno "0..*" -l-> "1" Questao
+
+@enduml
