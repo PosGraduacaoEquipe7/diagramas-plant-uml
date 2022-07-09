@@ -7,15 +7,11 @@ LAYOUT_WITH_LEGEND()
 title Diagrama Container - Instituição ABC
 
 Person(aluno, "Aluno da Instituição","Um aluno com matricula ativa")
-Person(professor, "Professor da Instituição", "Professor que acessa sua área logada")
 Person(admin, "Administrativo da Instituição", "Funcionario administrativo")
 Person(direcao, "Direção da Instituição", "Funcionario da Direção")
 
 Enterprise_Boundary(c1, "API Gateway") {
 
-        Container(systemAluno, "Sistema Aluno", "Desc sistema aluno")
-        Container(systemAluno, "Sistema Aluno", "Desc sistema aluno")
-        Container(systemProfessor, "Sistema Professor", "desc sistema professor")
         Container(systemFinanceiro, "Sistema Financeiro", "desc sistema professor")
         Container(systemAdministrativo, "Sistema Administrativo", "desc sistema professor")
 
@@ -28,10 +24,9 @@ Enterprise_Boundary(c1, "API Gateway") {
 'Rel_L, Rel_Left
 'Rel_R, Rel_Right
 
-Rel(aluno, systemAluno ,"Gera certificado\nEnvia documentos\nAcessa conteúdos\nRealiza tarefas", "Requisição HTTPS/JSON")
 Rel(aluno, systemMatricula , "Realiza Matricula\nGerencia Documentação", "Requisição HTTPS/JSON")
 Rel(aluno, systemFinanceiro , "Gerencia pagamentos", "Requisição HTTPS/JSON")
-Rel(professor, systemProfessor , "Gerencia notas\nGerencia atividades\nGerencia conteúdos\nGerencia Presença", "Requisição HTTPS/JSON")
+
 Rel(admin, systemAdministrativo , "Gerencia Documentação", "Requisição HTTPS/JSON")
 Rel(admin, systemFinanceiro , "Gerencia pagamentos\nGerencia Financeiro", "Requisição HTTPS/JSON")
 Rel(admin, systemMatricula , "Gerencia pagamentos\nGerencia Documentação\nGerencia Financeiro", "Requisição HTTPS/JSON")
