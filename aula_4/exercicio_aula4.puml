@@ -1,6 +1,7 @@
 @startuml classes
 top to bottom direction
 scale 800 width
+title Grupo 7: Airton Felipe Sauer de Oliveira, Andressa Friedrichs, Felipe Amadeu Junges e Marcelo Aloísio da Silva
 
 class Curso{
     descricao: string
@@ -14,7 +15,7 @@ class Prova {
     dateHoraTermino: datetime
 }
 abstract class Questao {
-    peso: decimal
+    percentualPeso: decimal
     enunciado:string
 }
 class QuestaoMultiplaEscolha {
@@ -58,14 +59,18 @@ Questao <|-u- QuestaoRelacionamento
 RespostaAluno <|-u- RespostaAlunoMultiplaEscolha
 RespostaAluno <|-u- RespostaAlunoRelacionar
 
-Turma --> Curso
-Prova --> Turma
+Turma "1..*" --> "1" Curso
+Prova "0..*" --> "1" Turma
 Questao "1..*" --* "1" Prova
 RespostaMultiplaEscolha "5" <-- "1" QuestaoMultiplaEscolha
 RespostaRelacionamento "2..5" <-- "1" QuestaoRelacionamento
-Aluno "1" <-l- "1..*" ProvaAluno
-ProvaAluno "1..*" -l-> "1" Prova
+Aluno "1" <-u- "1..*" ProvaAluno
+ProvaAluno "1..*" -left---> "1" Prova : pertence
 RespostaAluno "1..*" <-- "1" ProvaAluno
-RespostaAluno "0..*" -l-> "1" Questao
+RespostaAluno "0..*" -left-> "1" Questao
+Aluno "0..*" -left- "1..*" Turma : matriculado
+
+'  - horizontal
+' -- vertical
 
 @enduml
