@@ -1,0 +1,62 @@
+@startwbs EAP
+
+* Processo de Matrícula
+** Gerenciamento\nde Login
+*** Autenticar por e-mail ou CPF
+*** Recuperar Senha
+*** Gerenciar Usuários
+*** Gerenciar Perfis de Acesso
+** Gestão de Ensino
+*** Gerenciar Cursos
+*** Gerenciar Turmas
+*** Gerenciar Professor
+*** Gerenciar Disciplinas
+** Gestão do Aluno
+*** Gerenciar Aluno
+*** Gerenciar Documentação\ndo Aluno
+*** Gerenciar Situação\nFinanceira do Aluno
+** Gestão de Matrícula
+*** Matrícula em\nCurso de Extensão
+*** Matrícula em\nCurso de Pós-Graduação
+*** Notificação de\nConfirmação de Matrícula
+*** Aplicar Desconto ao Curso
+*** Calcular Valores da\nMatrícula e de Parcelas
+*** Gerar Contrato com\nAceite do Aluno
+** Gestão Financeira
+*** Fazer Pagamento via Boleto
+*** Fazer Pagamento via\nCartão de Crédito
+*** Gerenciar Boletos dos Alunos
+*** Gerar Voucher Promocional
+*** Gerenciar Alunos Inadimplentes
+*** Gerar Relatório de\nAlunos Inadimplentes
+** Integrações
+*** Integrar com Plataforma\nde Cartão de Crédito
+*** Integrar com Gerador de Boletos
+
+' v 1. Autenticar por e-mail ou CPF;
+' v 2. Recuperar Senha;
+' v 3. Gerenciar Usuários;
+' v 4. Gerenciar Perfis de Acesso;
+' v 5. Gerenciar Cursos;
+' v 6. Gerenciar Turmas;
+' v 7. Gerenciar Professor;
+' v 8. Gerenciar Disciplinas (Carga Horária, Ementa e Pré-Requisitos);
+' v 9. Gerenciar Aluno;
+' v 10.Gerenciar Documentação do Aluno;
+' v 11.Realizar Matrícula em Curso de Extensão;
+' v 12.Realizar Matrícula em Curso de Pós-Graduação;
+' v 13.Enviar Notificação de Confirmação de Matrícula;
+' v 14.Aplicar Desconto ao Curso;
+' v 15.Calcular Valores da Matrícula e de Parcelas;
+' v 16.Gerar Contrato com Aceite do Aluno;
+' v 17.Fazer Pagamento via Boleto;
+' v 18.Integrar com Gerador de Boletos;
+' v 19.Fazer Pagamento via Cartão de Crédito;
+' v 20.Integrar com Plataforma de Cartão de Crédito;
+' v 21.Gerenciar Situação Financeira do Aluno;
+'   22.Gerar Relatório de Alunos Inadimplentes;
+' v 23.Gerenciar Boletos dos Alunos;
+' v 24.Gerar Voucher Promocional;
+' v 25.Gerenciar Alunos Inadimplentes;
+
+@endwbs
