@@ -48,6 +48,8 @@ Rel(ccontrato, contrato, "Uses", "JSON/HTTPS")
 
 Rel(financeiroService, dbFin, "Uses")
 Rel(contrato, dbFin, "Uses")
+
+Rel(financeiroService, boletoCloud, "Uses")
 @enduml
 
 
