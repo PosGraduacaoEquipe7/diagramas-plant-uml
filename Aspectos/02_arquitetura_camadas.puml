@@ -1,0 +1,61 @@
+@startuml
+'!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+' uncomment the following line and comment the first to use locally
+!include C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+'!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+
+LAYOUT_TOP_DOWN()
+
+title Diagrama Componente - Instituição ABC
+
+Container(spa, "SPA WEB", "Angular e TypeScript", "Provê todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.", $sprite="angular")
+
+Container_Boundary(api, "Camada API") {
+    Component(cmatricula, "Controller Matricula", "Controller", "Provê todas as API para gestão de matriculas")
+    Component(cparcela, "Controller Parcela", "Controller", "Provê todas as API para gestão de parcelas")
+    Component(ccontrato, "Controller Contrato", "Controller", "Provê todas as API para gestão de contratos")
+}
+
+Container_Boundary(business, "Camada negócio") {
+    Component(matricula, "Service Matricula", "service", "Provê as regras de negócio para gestão de matrículas")
+    Component(financeiroService, "Financeiro Service", "service", "Gerencia pagamentos e mensalidades.")
+    Component(parcela, "Service Parcela", "service", "Provê as regras de negócio para gestão de parcelas")
+    Component(contrato, "Service Contrato", "service", "Provê as regras de negócio para gestão de contratos")
+
+    Rel(cmatricula, matricula, "Uses")
+    Rel(matricula, financeiroService, "Uses")
+
+    Rel(cparcela, parcela, "Uses")
+
+    Rel(parcela, financeiroService, "Uses")
+}
+
+Container_Boundary(db, "Camada persistência") {
+    ContainerDb(dbFin, "Database ", "Banco de dados relacional SQLite", "Armazena informações financeiras, parcelas, boletos")
+}
+
+Container_Boundary(external, "Camada API's externas") {
+    System_Ext(boletoCloud, "API BoletoCloud", "Api de geração de boletos")
+}
+
+Container_Boundary(crossCutting, "Camada Cross-Cutting") {
+    Component(ccLogs, "Logs", "service", "")
+    Component(ccAuth, "Autenticação", "service", "")
+    Component(ccException, "Exceções", "service", "")
+}
+
+Rel_L(api, crossCutting, " ", "")
+Rel_L(business, crossCutting, " ", "")
+
+Rel(spa, cmatricula, "Uses", "JSON/HTTPS")
+Rel(spa, cparcela, "Uses", "JSON/HTTPS")
+Rel(spa, ccontrato, "Uses", "JSON/HTTPS")
+Rel(ccontrato, contrato, "Uses", "JSON/HTTPS")
+Rel(financeiroService, dbFin, "Uses")
+Rel(contrato, dbFin, "Uses")
+
+Rel(financeiroService, boletoCloud, "Uses")
+@enduml

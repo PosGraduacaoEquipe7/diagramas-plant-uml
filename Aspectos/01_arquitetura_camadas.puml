@@ -1,0 +1,47 @@
+@startuml
+'!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+' uncomment the following line and comment the first to use locally
+!include C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+'!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/angular.puml
+
+LAYOUT_TOP_DOWN()
+
+title Diagrama Componente - Instituição ABC
+
+Container(spa, "SPA WEB", "Angular e TypeScript", "Provê todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.", $sprite="angular")
+
+Container_Boundary(api, "Camada API") {
+    Component(controllers, "Controllers", "Controllers", "Recebe as requisições HTTP")
+}
+
+Container_Boundary(business, "Camada negócio") {
+    Component(services, "Services", "Services", "Provê as regras de negócio da aplicação")
+}
+
+Container_Boundary(db, "Camada persistência") {
+    ContainerDb(dbFin, "Database ", "Banco de dados relacional SQLite", "Armazena informações financeiras, parcelas, boletos")
+}
+
+System_Boundary(external, "Camada API's externas") {
+    System_Ext(boletoCloud, "API BoletoCloud", "Api de geração de boletos")
+}
+
+Container_Boundary(crossCutting, "Camada Cross-Cutting") {
+    Component(ccLogs, "Logs", "service", "")
+    Component(ccAuth, "Autenticação", "service", "")
+    Component(ccException, "Exceções", "service", "")
+}
+
+Rel_D(spa, controllers, " ")
+Rel_D(controllers, services, " ")
+
+Rel_D(services, dbFin, " ")
+Rel_D(services, external, " ")
+
+Rel_R(controllers, crossCutting, " ")
+Rel_U(services, crossCutting, " ")
+
+@enduml

@@ -1,0 +1,45 @@
+@startuml classes
+left to right direction
+
+class Cliente {
+    registroAcademico: string
+    nome: string
+    cpf: string
+    email: string
+    senha: string
+    telefone: string
+}
+
+class Contrato {
+    valorTotal: decimal
+    cancelado: bool
+    nome: string
+    texto: string
+    ativo: boolean
+    dataHoraAceiteContrato: datetime
+}
+class Curso {
+    descricao: string
+    valorBruto: decimal
+    cargaHoraria: double
+}
+class Turma {
+    numero: string
+    dataInicio: date
+    dataTermino: date
+    horario: int
+    semestre: string
+}
+class Parcela {
+    sequencial: int
+    valor: decimal
+    dataVencimento: date
+}
+
+Cliente "1" <-- "0..*" Contrato
+Contrato "1" *-- "1..*" Parcela
+Turma "1..*" <--> "1" Curso
+Turma "1" <-u-> "1..*" Contrato
+
+
+@enduml
