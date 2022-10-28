@@ -9,7 +9,7 @@
 
 LAYOUT_TOP_DOWN()
 
-title Diagrama Componente - Instituição ABC
+'title Diagrama Componente - Instituição ABC
 
 Container(spa, "SPA WEB", "Angular e TypeScript", "Provê todas as funcionalidades para o Aluno ao realizar matricula utilizando browser web.", $sprite="angular")
 
@@ -26,13 +26,15 @@ Container_Boundary(db, "Camada persistência") {
 }
 
 System_Boundary(external, "Camada API's externas") {
-    System_Ext(boletoCloud, "API BoletoCloud", "Api de geração de boletos")
+    System_Ext(boletoCloud, "API's externas", "API's externas")
 }
 
 Container_Boundary(crossCutting, "Camada Cross-Cutting") {
     Component(ccLogs, "Logs", "service", "")
     Component(ccAuth, "Autenticação", "service", "")
+    Component(ccAuthorization, "Autorização", "service", "")
     Component(ccException, "Exceções", "service", "")
+    Component(ccAccess, "Registro de acessos", "service", "")
 }
 
 Rel_D(spa, controllers, " ")
@@ -43,5 +45,7 @@ Rel_D(services, external, " ")
 
 Rel_R(controllers, crossCutting, " ")
 Rel_U(services, crossCutting, " ")
+Rel_R(db, crossCutting, " ")
+Rel_U(external, crossCutting, " ")
 
 @enduml

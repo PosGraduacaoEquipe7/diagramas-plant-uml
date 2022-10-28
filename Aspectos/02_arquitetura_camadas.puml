@@ -21,7 +21,7 @@ Container_Boundary(api, "Camada API") {
 
 Container_Boundary(business, "Camada negócio") {
     Component(matricula, "Service Matricula", "service", "Provê as regras de negócio para gestão de matrículas")
-    Component(financeiroService, "Financeiro Service", "service", "Gerencia pagamentos e mensalidades.")
+    Component(financeiroService, "Service Financeiro", "service", "Gerencia pagamentos e mensalidades.")
     Component(parcela, "Service Parcela", "service", "Provê as regras de negócio para gestão de parcelas")
     Component(contrato, "Service Contrato", "service", "Provê as regras de negócio para gestão de contratos")
 
@@ -42,9 +42,11 @@ Container_Boundary(external, "Camada API's externas") {
 }
 
 Container_Boundary(crossCutting, "Camada Cross-Cutting") {
-    Component(ccLogs, "Logs", "service", "")
-    Component(ccAuth, "Autenticação", "service", "")
-    Component(ccException, "Exceções", "service", "")
+    Component(ccLogs, "Logs", "aspect", "")
+    Component(ccAuth, "Autenticação", "aspect", "")
+    Component(ccAuthorization, "Autorização", "aspect", "")
+    Component(ccException, "Exceções", "aspect", "")
+    Component(ccAccess, "Registro de acessos", "aspect", "")
 }
 
 Rel_L(api, crossCutting, " ", "")
